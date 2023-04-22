@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on My New Hugo Site</title>
+    <link>http://example.org/tags/</link>
+    <description>Recent content in Tags on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Apr 2023 11:10:36 +0800</lastBuildDate><atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NLP</title>
+      <link>http://example.org/tags/nlp/</link>
+      <pubDate>Thu, 20 Apr 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/nlp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Text Data</title>
+      <link>http://example.org/tags/text-data/</link>
+      <pubDate>Thu, 20 Apr 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/text-data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DAX</title>
+      <link>http://example.org/tags/dax/</link>
+      <pubDate>Mon, 10 Apr 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/dax/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Power BI</title>
+      <link>http://example.org/tags/power-bi/</link>
+      <pubDate>Mon, 10 Apr 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/power-bi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Power Pivot</title>
+      <link>http://example.org/tags/power-pivot/</link>
+      <pubDate>Mon, 10 Apr 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/power-pivot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Selenium</title>
+      <link>http://example.org/tags/selenium/</link>
+      <pubDate>Tue, 28 Mar 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/selenium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web Scraping</title>
+      <link>http://example.org/tags/web-scraping/</link>
+      <pubDate>Tue, 28 Mar 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/web-scraping/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ggplot2</title>
+      <link>http://example.org/tags/ggplot2/</link>
+      <pubDate>Thu, 02 Feb 2023 11:10:36 +0800</pubDate>
+      
+      <guid>http://example.org/tags/ggplot2/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
