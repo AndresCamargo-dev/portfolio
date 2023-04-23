@@ -1,0 +1,4 @@
+{{ $url := .Get "url" }}
+{{ $width := .Get "width" }}
+{{ $height := .Get "height" }}
+<iframe width="{{ $width }}" height="{{ $height }}" src="{{ $url }}" frameborder="0" allowFullScreen="true"></iframe>

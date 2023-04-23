@@ -1,0 +1,214 @@
+---
+title: Satellite images defy economic data of authoritarian regimes
+author: 'Andrés Camargo'
+date: "2023-02-02T11:10:36+08:00"
+slug: []
+categories: []
+tags: ["Ggplot2"]
+summary: Highly customized dumbbell chart that compares official GDP against satellite-based estimation of GDP, across 103 countries.
+output:
+  blogdown::html_page
+---
+
+
+
+<p>Satellite images of the brightness of the earth, also called nighttime lights data (NTL, from the US Air Force’s Defense Meteorological Satellite Program), have been used as a proxy for economic activity. Luis R. Martínez, professor at the Harris School of Public Policy at the University of Chicago, not only developed a model to calculate the GDP of every country based in the NTL data set, but he also found that countries with less political rights and civil liberties report overestimated GDP. The goal of this post is to rebuild a chart designed by The Economist to show the magnitude of this finding. Find The Economist article <a href="https://www.economist.com/graphic-detail/2022/09/29/a-study-of-lights-at-night-suggests-dictators-lie-about-economic-growth">here</a>.</p>
+<p>The data includes different records per country: the GDP from World Bank, the GDP estimated based on NTL, and the yearly growth of each one between 2002 and 2021. In addition, it includes the status in the Freedom in the World Index 2021, published by Freedom House, which classifies each country in three categories (Free, Partly Free, and Not Free). Moreover, the population is incorporated, because for visualization purposes the chart only shows countries with more than 5 million population. Finally, the projections of the NTL model are included to contrast the official GDP statistics.</p>
+<p>Let’s see how the data looks like:</p>
+<table>
+<colgroup>
+<col width="2%" />
+<col width="21%" />
+<col width="10%" />
+<col width="18%" />
+<col width="19%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Country.Name</th>
+<th align="right">Year</th>
+<th align="right">GDP. growth.LCU.R</th>
+<th align="right">GDP.in. 2015.USD.R</th>
+<th align="right">GDP.growth. LCU.adjExag.NTL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Libya</td>
+<td align="right">2021</td>
+<td align="right">31</td>
+<td align="right">60910775962</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Yemen, Rep.</td>
+<td align="right">2021</td>
+<td align="right">-2</td>
+<td align="right">33429671860</td>
+<td align="right">-2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Zimbabwe</td>
+<td align="right">2021</td>
+<td align="right">6</td>
+<td align="right">20562359266</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Greece</td>
+<td align="right">2021</td>
+<td align="right">8</td>
+<td align="right">200827546085</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Lebanon</td>
+<td align="right">2021</td>
+<td align="right">-11</td>
+<td align="right">30979755568</td>
+<td align="right">-11</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>GDP.in. 2015.USD.NTL</td>
+<td align="right">GDP.var.R</td>
+<td align="right">GDP.var.NTL</td>
+<td align="right">FIW.Status</td>
+<td align="right">Popu.2021</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>36634943488</td>
+<td align="right">8.73</td>
+<td align="right">-34.61</td>
+<td align="right">NF</td>
+<td align="right">6958538</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>29289246720</td>
+<td align="right">-25.33</td>
+<td align="right">-34.58</td>
+<td align="right">NF</td>
+<td align="right">30490639</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>15954965504</td>
+<td align="right">10.36</td>
+<td align="right">-14.36</td>
+<td align="right">NF</td>
+<td align="right">15092171</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>197563367424</td>
+<td align="right">-7.88</td>
+<td align="right">-9.38</td>
+<td align="right">F</td>
+<td align="right">10664568</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>26433470464</td>
+<td align="right">11.82</td>
+<td align="right">-4.59</td>
+<td align="right">PF</td>
+<td align="right">6769151</td>
+</tr>
+</tbody>
+</table>
+<div id="the-chart-reproduction" class="section level2">
+<h2>The chart reproduction</h2>
+<p><img src="gdp_satelite_chart_reproduction.png" title="GDP comparison" class="external" style="width:100.0%" /></p>
+<pre class="r"><code>chart &lt;- ggplot(DF, aes(x = order, y = GDP.var.NTL, xend = order, 
+                    yend = GDP.var.R, color = FIW.Status)) +
+  facet_wrap(~ factor(FIW.Status, levels = c(&quot;F&quot;, &quot;PF&quot;, &quot;NF&quot;))) +
+  geom_hline(yintercept = 0, linewidth = 0.25) +
+  geom_segment() +
+  geom_point(aes(xend = order, y = GDP.var.R, size = GDP.in.2015.USD.R/1e+12), 
+             shape = 21, fill = &quot;#C7C5BD&quot;, color = &quot;white&quot;) +
+  geom_point(aes(size = GDP.in.2015.USD.NTL / 1e+12, fill = FIW.Status), 
+             shape = 21, color = &quot;white&quot;) +
+  scale_color_manual(values = c(&quot;#FFC259&quot;, &quot;#F6423C&quot;, &quot;#FFA9A6&quot;)) +
+  scale_fill_manual(values = c(&quot;#FFC259&quot;, &quot;#F6423C&quot;, &quot;#FFA9A6&quot;)) +
+  scale_size(range = c(1, 12), breaks = c(0.1, 2, 10), &quot;GDP in 2021, $trn†&quot;) + 
+  scale_y_continuous(
+    position = &quot;right&quot;,
+    limits = c(-50, 450),
+    n.breaks = 10,
+    expand = expansion(0)
+  ) +
+  lims(x = c(0.5, 46)) +
+  theme_economist_white() + 
+  theme(
+    plot.background = element_rect(fill = &quot;white&quot;),
+    panel.spacing.x = unit(0, &quot;cm&quot;),
+    strip.background = element_rect(fill = &quot;white&quot;), 
+    strip.text = element_text(color = &quot;white&quot;), 
+    panel.grid = element_line(color = &quot;ligthgray&quot;, linewidth = 0.10), 
+    axis.line.x.bottom = element_line(color = &quot;gray&quot;, linewidth = 0.10),
+  ) +
+  theme(
+  axis.title.x = element_blank(), 
+  axis.title.y = element_blank(), 
+  axis.text.y = element_text(vjust = -0.5, color = &quot;#2C2E2E&quot;), 
+  axis.text.x = element_blank(),
+  axis.ticks.x = element_blank(),
+  legend.background = element_rect(fill = &quot;white&quot;),
+  legend.position = c(0,0.85),
+  legend.direction = &quot;horizontal&quot;,
+  legend.justification = c(0, 1),
+  legend.key = element_rect(fill = &quot;transparent&quot;),
+  plot.caption = element_text(hjust = 0, vjust = -1, 
+                              color = &quot;#454545&quot;, size = 8)
+  ) +
+  guides(color = FALSE, fill = FALSE, 
+                size = guide_legend(title.position = &quot;top&quot;)) +
+  geom_text(data = DF%&gt;% filter(label == 1 &amp; 
+          !(Country.Name %in% c(&quot;Japan&quot;, &quot;Britain&quot;,&quot;United States&quot;, &quot;China&quot;,
+            &quot;Australia&quot;, &quot;Ireland&quot;, &quot;India&quot;, &quot;Russia&quot;, &quot;Mexico&quot;, &quot;Peru&quot;))), 
+            aes(label = Country.Name), color = &quot;#454545&quot;,
+            vjust = 1.5, hjust = -0.1, check_overlap = T) +
+  geom_text(data= countriestxt, aes(label = labels), color=&quot;#454545&quot;, hjust=0)+
+  geom_text(data = titles, aes(label = labels), fontface = &quot;bold&quot;, size=4.5) +
+  geom_segment(data = average, aes(x=order, xend=order, y=GDP.var.NTL, 
+                                   yend=GDP.var.R), color=&quot;black&quot;) +
+  geom_point(data = average,aes(x=order, y=GDP.var.NTL, 
+             size=GDP.in.2015.USD.NTL, fill=FIW.Status), 
+             shape=21, color=&quot;black&quot;) + 
+  geom_point(data = average, aes(x=order, y=GDP.var.R, size=GDP.in.2015.USD.R), 
+             shape=21, color=&quot;black&quot;, fill=&quot;gray&quot;) +
+  geom_text(data= avTitles, aes(label= labels), fontface = &quot;bold&quot;, 
+            size= 3.5, color = &quot;black&quot;) +
+  geom_label(data = sumQuote, aes(label = text), color = &quot;black&quot;, 
+             size = 3, hjust = 0, vjust = 1, lineheight = .8, fill = &quot;white&quot;, 
+             label.size = NA, label.padding = unit(0, &quot;cm&quot;)) +
+  labs(caption = captiontx) + 
+  inset_element(pinset, left=0, bottom=0.83, right=0.3, top=1, align_to=&quot;full&quot;)</code></pre>
+</div>
+<div id="alternative-visualization" class="section level2">
+<h2>Alternative visualization</h2>
+<p>Analyzing the original chart, we can see that it has some advantages. For instance, it allows us to identify each of the 103 countries, or it separates clearly the Freedom categories. Nevertheless, we realize that the X-axis is used to create an order among dumbbells, but it doesn’t add more information. Therefore, we propose an alternative visualization that uses this axis to compare GDP values. In our chart, the Y-axis shows the officially reported GDP growth, while the X-axis illustrates the NTL-based estimate of GDP. As a result, we should expect that each country will be located in the intersection line where Y is equal to X. However, the autocratic countries are far away from this line, as their value of the officially reported GDP.</p>
+<p><img src="gdp_satelite_chart_alternative.png" title="Alternative GDP comparison" class="external" style="width:100.0%" /></p>
+<p><a href="https://github.com/AndresCamargo-dev/dataviz/tree/main/_projects/2022/100470958">Github</a></p>
+</div>
+<div id="what-can-we-do-with-ggplot2" class="section level2">
+<h2>What can we do with Ggplot2:</h2>
+<p>image of collection of graphs</p>
+</div>

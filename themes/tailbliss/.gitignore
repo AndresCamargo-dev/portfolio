@@ -1,0 +1,16 @@
+node_modules/
+.vercel
+yarn-error.log
+# Local Netlify folder
+.netlify
+yarn-error.log
+#deplotment recomendations
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+Thumbs.db
+.hugo_build.lock
+/public/
+/resources/
